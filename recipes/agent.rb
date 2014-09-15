@@ -78,7 +78,7 @@ if platform_family? "debian"
 
     service "logstash_agent" do
       provider Chef::Provider::Service::Upstart
-      action [ :enable, :start ]
+      action [ :enable, :start, :restart]
     end
   else
     runit_service "logstash_agent"

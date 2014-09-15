@@ -10,7 +10,7 @@ default['logstash']['agent']['xmx'] = '384M'
 default['logstash']['agent']['java_opts'] = ''
 default['logstash']['agent']['gc_opts'] = '-XX:+UseParallelOldGC'
 default['logstash']['agent']['ipv4_only'] = false
-default['logstash']['agent']['debug'] = false
+default['logstash']['agent']['debug'] = true
 
 # roles/flasgs for various autoconfig/discovery components
 default['logstash']['agent']['server_role'] = 'logstash_server'

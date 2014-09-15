@@ -133,6 +133,11 @@ status() {
   if [[ $pid && -d "/proc/$pid" ]]; then
     success
     echo -e "Logstash is running with pid $pid"
+    echo $LS_HOME
+    echo $LOGDIR
+    echo $JAVA_OPTS
+    echo -e "-------- Log content:"
+    cat $LS_LOG
   fi
 
   # NOT RUNNING
