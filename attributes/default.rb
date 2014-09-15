@@ -1,19 +1,19 @@
-default['logstash']['directory'] = '/opt/logstash'
-default['logstash']['server_role'] = 'logstash-server'
-default['logstash']['broker_role'] = 'logstash-broker'
-default['logstash']['remote_broker_ip'] = nil
-default['logstash']['index_role'] = 'logstash-index'
-default['logstash']['url'] = 'http://semicomplete.com/files/logstash/logstash-1.1.0-monolithic.jar'
-default['logstash']['version'] = '1.1.0'
-default['logstash']['checksum'] = '6c9f491865b5eed569e029f6ad9f3343f346cfa04d04314e7aadea7b9578490f'
+default['logstash']['basedir'] = '/opt/logstash'
+default['logstash']['user'] = 'logstash'
+default['logstash']['group'] = 'logstash'
+default['logstash']['join_groups'] = []
+default['logstash']['log_dir'] = '/opt/logstash/logs'
+default['logstash']['pid_dir'] = '/var/logstash/run'
+default['logstash']['create_account'] = true
 
-default['logstash']['grok']['url'] = 'http://semicomplete.googlecode.com/files/grok_'
-default['logstash']['grok']['version'] = '1.20101030.3088_amd64'
-default['logstash']['grok']['checksum'] = 'd37c8604890268574d8f3dbe2324e539a61f075ea8c099a697c3caba376a2b99'
+# roles/flags for various search/discovery
+default['logstash']['graphite_role'] = 'graphite_server'
+default['logstash']['graphite_query'] = "roles:#{node['logstash']['graphite_role']} AND chef_environment:#{node.chef_environment}"
+default['logstash']['elasticsearch_role'] = 'elasticsearch_server'
+default['logstash']['elasticsearch_query'] = "roles:#{node['logstash']['elasticsearch_role']} AND chef_environment:#{node.chef_environment}"
+default['logstash']['elasticsearch_cluster'] = 'logstash'
+default['logstash']['elasticsearch_ip'] = ''
+default['logstash']['elasticsearch_port'] = ''
+default['logstash']['graphite_ip'] = ''
 
-default['logstash']['syslog_server'] = false
-default['logstash']['syslog']['debug'] = false
-default['logstash']['syslog']['listen'] = '0.0.0.0'
-default['logstash']['syslog']['message_format'] = 'json'
-default['logstash']['syslog']['port'] = 514
-default['logstash']['syslog']['type'] = 'syslog'
+default['logstash']['patterns'] = {}

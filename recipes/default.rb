@@ -1,54 +1,39 @@
-# Author:: Anthony Goddard
-# Author:: Phil Cryer
 #
 # Cookbook Name:: logstash
 # Recipe:: default
 #
-#
-# Copyright 2011, Woods Hole Marine Biologcal Laboratory
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+include_recipe "runit" unless node["platform_version"] == "12.04"
+include_recipe "java"
 
-include_recipe 'java'
+if node['logstash']['create_account']
 
-directory node['logstash']['directory'] do
+  group node['logstash']['group'] do
+    system true
+  end
+
+  user node['logstash']['user'] do
+    group node['logstash']['group']
+    home "/var/lib/logstash"
+    system true
+    action :create
+    manage_home true
+  end
+
+end
+
+directory node['logstash']['basedir'] do
+  action :create
   owner "root"
   group "root"
   mode "0755"
-  action :create
-  recursive true
 end
 
-remote_file "#{node['logstash']['directory']}/logstash-#{node['logstash']['version']}-monolithic.jar" do
-  source "http://semicomplete.com/files/logstash/logstash-#{node['logstash']['version']}-monolithic.jar"
-  mode "0744"
-  checksum node['logstash']['checksum']
-end
-
-directory '/etc/logstash' do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-  recursive true
-end
-
-directory '/var/log/logstash' do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-  recursive true
+node['logstash']['join_groups'].each do |grp|
+  group grp do
+    members node['logstash']['user']
+    action :modify
+    append true
+    only_if "grep -q '^#{grp}:' /etc/group"
+  end
 end
 
