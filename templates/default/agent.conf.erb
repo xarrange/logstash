@@ -16,8 +16,8 @@ input {
     type => "apache"
   }
   file   {
-              path => ["<% node['apache']['log_dir']+"/jira-access.log -%>"]
-              type => "syslog"
+              path => <% "[\" #{node['apache']['log_dir']}/jira-access.log \"]"-%>
+              type => "apache"
     }
   <% else %>
     <%= LogstashConf.section_to_str(node['logstash']['agent']['inputs']) %>
