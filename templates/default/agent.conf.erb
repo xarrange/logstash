@@ -3,12 +3,22 @@
 # Manual changes will be lost
 input {
   <% if node['logstash']['agent']['inputs'].empty? -%>
+  file  {
+              path => ["/var/log/nginx/*log"]
+              type => "nginx"
+            }
+  file   {
+              path => ["/var/log/syslog"]
+              type => "syslog" 
+    }
   file {
-    type => "sample-logs"
-    path => ["/var/log/*.log"]
-    exclude => ["*.gz"]
-    debug => true
+    path => "/var/log/apache/access.log"
+    type => "apache"
   }
+  file   {
+              path => ["<% node['apache']['log_dir']+"/jira-access.log -%>"]
+              type => "syslog"
+    }
   <% else %>
     <%= LogstashConf.section_to_str(node['logstash']['agent']['inputs']) %>
   <% end -%>
