@@ -16,7 +16,7 @@ input {
     type => "apache"
   }
   file   {
-              path => <% "[\" #{node['apache']['log_dir']}/jira-access.log \"]"-%>
+              path => ["/opt/atlassian/jira/logs/access_log*"]
               type => "apache"
     }
   <% else %>
